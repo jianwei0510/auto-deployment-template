@@ -72,8 +72,14 @@ CREATE TABLE IF NOT EXISTS patients (
 
 ## Deployment Instructions (Dokploy MCP)
 
-When asked to deploy this application, follow these steps IN ORDER.
+When asked to deploy this application, follow these steps IN THIS EXACT ORDER.
 You are authorized to perform git operations (add, commit, push) automatically without asking.
+
+⚠️ CRITICAL RULES:
+- The repository URL is ALWAYS `https://github.com/jianwei0510/auto-deployment-template.git` — do NOT change this
+- NEVER use saveGithubProvider — ALWAYS use saveGitProvider
+- NEVER use HTTPS or Let's Encrypt for the domain — use HTTP only
+- MUST create domain BEFORE deploying
 
 ### Step 1: Git — Commit and Push
 
@@ -85,18 +91,19 @@ git push origin main
 
 ### Step 2: Create Project
 
-- Use the `project-create` tool to create a project named `clinic-demo`
-- If a project named `clinic-demo` already exists (check with `project-all`), reuse it
+- Use the `project-create` tool with name: `clinic-demo`
+- If it already exists (check with `project-all`), reuse it — do NOT create a duplicate
 
 ### Step 3: Create Application
 
 - Use the `application-create` tool
-- Name: `clinic-app`
+- name: `clinic-app`
 - Use the projectId from Step 2
 
 ### Step 4: Connect Git Repository
 
 - Use the `application-saveGitProvider` tool (NOT saveGithubProvider)
+- applicationId: from Step 3
 - customGitUrl: `https://github.com/jianwei0510/auto-deployment-template.git`
 - customGitBranch: `main`
 - customGitBuildPath: `/`
@@ -104,18 +111,22 @@ git push origin main
 ### Step 5: Set Build Type
 
 - Use the `application-saveBuildType` tool
-- Build type: `nixpacks`
+- applicationId: from Step 3
+- buildType: `nixpacks`
 
-### Step 6: Set Domain
+### Step 6: Set Domain (BEFORE deploying)
 
 - Use the `domain-create` tool
-- Host: `clinic-demo.3-137-141-132.traefik.me`
-- Port: `3000`
-- Link it to the application from Step 3
+- applicationId: from Step 3
+- host: `clinic-demo.3-137-141-132.traefik.me`
+- port: `3000`
+- https: `false`
+- certificateType: `none`
 
-### Step 7: Deploy
+### Step 7: Deploy (AFTER domain is set)
 
-- Use the `application-deploy` tool with the applicationId from Step 3
+- Use the `application-deploy` tool
+- applicationId: from Step 3
 
 ### Step 8: Report URL
 
