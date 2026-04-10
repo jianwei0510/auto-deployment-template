@@ -94,12 +94,12 @@ git push origin main
 - Name: `clinic-app`
 - Use the projectId from Step 2
 
-### Step 4: Connect GitHub Repository
+### Step 4: Connect Git Repository
 
-- Use the `application-saveGithubProvider` tool
-- Repository: `https://github.com/jianwei0510/auto-deployment-template`
-- Branch: `main`
-- Build path: `/`
+- Use the `application-saveGitProvider` tool (NOT saveGithubProvider)
+- customGitUrl: `https://github.com/jianwei0510/auto-deployment-template.git`
+- customGitBranch: `main`
+- customGitBuildPath: `/`
 
 ### Step 5: Set Build Type
 
