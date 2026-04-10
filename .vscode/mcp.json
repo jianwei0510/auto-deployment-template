@@ -6,7 +6,7 @@
       "args": ["-y", "@ahdev/dokploy-mcp@latest"],
       "env": {
         "DOKPLOY_URL": "https://deployment-portal.wuc.edu/api",
-        "DOKPLOY_API_KEY": "oBjujEkqOQuSdShEXxTjRroLtOHmtsdLMSnnUcMTGyHGIPYpTSyjppbPdgynhfUU"
+        "DOKPLOY_API_KEY": "YOUR_API_KEY_HERE"
       }
     }
   }
