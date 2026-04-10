@@ -1,20 +1,20 @@
-# AI Vibe Coding + Auto Deployment Demo
+# AI Vibe Coding + 自動部署展示
 
-WUC Open House demo: use one prompt to build a clinic app, another prompt to deploy it live.
+WUC Open House 展示：用一個提示詞建立診所應用程式，再用另一個提示詞將它部署上線。
 
-## Setup
+## 環境設定
 
 ```bash
 npm install
 ```
 
-### Dokploy MCP (for deployment)
+### Dokploy MCP（用於部署）
 
-1. Go to https://deployment-portal.wuc.edu, click on your Profile
-2. Click "API/CLI" → "Generate Token"
-3. Open `.vscode/mcp.json` and fill in your API key
-4. Open project in VS Code, verify `dokploy-mcp` appears in MCP panel
-5. In Copilot Chat, switch to **Agent Mode** and select **Auto-Approve**
+1. 前往 https://deployment-portal.wuc.edu，點擊你的個人檔案
+2. 點擊「API/CLI」→「Generate Token」
+3. 開啟 `.vscode/mcp.json`，填入你的 API 金鑰
+4. 在 VS Code 中開啟專案，確認 MCP 面板中出現 `dokploy-mcp`
+5. 在 Copilot Chat 中，切換至 **Agent Mode** 並選擇 **Auto-Approve**
 
 ```json
 {
@@ -32,30 +32,30 @@ npm install
 }
 ```
 
-## Demo Flow
+## 展示流程
 
-**Step 1 — Build (Copilot Prompt):**
+**步驟一 — 建置（Copilot 提示詞）：**
 
 > 幫我用這個專案建立一個診所掛號系統，要有病人掛號、今日看診列表、標記已看診功能，請產生完整的程式碼
 
-**Step 2 — Deploy (Copilot Prompt):**
+**步驟二 — 部署（Copilot 提示詞）：**
 
 > 請幫我把這個應用程式部署到 Dokploy 上，自動 commit、push，建立專案和應用程式，然後告訴我結果
 
-Copilot will auto commit, push, create project/app in Dokploy, and trigger deployment.
+Copilot 會自動 commit、push，在 Dokploy 中建立專案與應用程式，並觸發部署。
 
-**Step 3 — Domain (Manual):**
+**步驟三 — 網域設定（手動）：**
 
-After Copilot finishes, go to Dokploy dashboard to add domain:
+Copilot 完成部署後，前往 Dokploy 控制台新增網域：
 
-1. Open https://deployment-portal.wuc.edu
-2. Find project `clinic-demo` → app `clinic-app`
-3. Click **Domains** → **Add Domain**
-4. Set Port to `3000`, save
+1. 開啟 https://deployment-portal.wuc.edu
+2. 找到專案 `clinic-demo` → 應用程式 `clinic-app`
+3. 點擊 **Domains** → **Add Domain**
+4. 將 Port 設定為 `3000`，儲存
 
-## Fallback
+## 備援方案
 
-If Copilot generation fails on stage:
+如果 Copilot 在現場展示時產生程式碼失敗：
 
 ```bash
 cp backup/app.js app.js
@@ -63,4 +63,4 @@ cp backup/public/index.html public/index.html
 node app.js
 ```
 
-Then deploy manually via Dokploy dashboard.
+接著透過 Dokploy 控制台手動部署。
