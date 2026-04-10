@@ -12,9 +12,7 @@ npm install
 
 1. 前往 https://deployment-portal.wuc.edu，點擊你的個人檔案
 2. 點擊「API/CLI」→「Generate Token」
-3. 開啟 `.vscode/mcp.json`，填入你的 API 金鑰
-4. 在 VS Code 中開啟專案，確認 MCP 面板中出現 `dokploy-mcp`
-5. 在 Copilot Chat 中，切換至 **Agent Mode** 並選擇 **Auto-Approve**
+3. 建立 `.vscode/mcp.json`，貼上以下內容，並填入你的 API 金鑰
 
 ```json
 {
@@ -31,6 +29,8 @@ npm install
   }
 }
 ```
+
+4. 在 Copilot Chat 中，切換至 **Agent Mode** 並選擇 **Auto-Approve**
 
 ## 展示流程
 
