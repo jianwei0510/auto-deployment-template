@@ -76,7 +76,7 @@ When asked to deploy this application, follow these steps IN THIS EXACT ORDER.
 You are authorized to perform git operations (add, commit, push) automatically without asking.
 
 ⚠️ CRITICAL RULES:
-- The repository URL is ALWAYS `https://github.com/jianwei0510/auto-deployment-template.git` — do NOT change this
+- For the repository URL, run `git remote get-url origin` to get the CURRENT repo URL — do NOT hardcode or guess
 - NEVER use saveGithubProvider — ALWAYS use saveGitProvider
 - NEVER use HTTPS or Let's Encrypt for the domain — use HTTP only
 - MUST create domain BEFORE deploying
@@ -104,7 +104,7 @@ git push origin main
 
 - Use the `application-saveGitProvider` tool (NOT saveGithubProvider)
 - applicationId: from Step 3
-- customGitUrl: `https://github.com/jianwei0510/auto-deployment-template.git`
+- customGitUrl: get from `git remote get-url origin` (append `.git` if not present)
 - customGitBranch: `main`
 - customGitBuildPath: `/`
 
