@@ -32,12 +32,12 @@ CREATE TABLE IF NOT EXISTS patients (
 
 ## API Endpoints (use these paths EXACTLY)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/patients` | Register a new patient. Body: `{ name, complaint, appointment_time }` |
-| GET | `/api/patients/today` | List today's patients: `WHERE date(appointment_time) = date('now','localtime')` |
-| PATCH | `/api/patients/:id/seen` | Mark a patient as seen: `SET seen = 1` |
-| DELETE | `/api/patients/:id` | Delete a patient record |
+| Method | Path                     | Description                                                                     |
+| ------ | ------------------------ | ------------------------------------------------------------------------------- |
+| POST   | `/api/patients`          | Register a new patient. Body: `{ name, complaint, appointment_time }`           |
+| GET    | `/api/patients/today`    | List today's patients: `WHERE date(appointment_time) = date('now','localtime')` |
+| PATCH  | `/api/patients/:id/seen` | Mark a patient as seen: `SET seen = 1`                                          |
+| DELETE | `/api/patients/:id`      | Delete a patient record                                                         |
 
 ## Frontend Requirements
 
@@ -70,75 +70,72 @@ CREATE TABLE IF NOT EXISTS patients (
 
 ---
 
-## Deployment Instructions (Dokploy MCP)
+## Deployment (Dokploy MCP)
 
-When asked to deploy this application, follow these steps IN THIS EXACT ORDER.
-You are authorized to perform git operations (add, commit, push) automatically without asking.
+When asked to deploy, execute these steps IN ORDER. You are authorized to run git commands automatically.
 
-⚠️ CRITICAL RULES — VIOLATING THESE WILL CAUSE DEPLOYMENT FAILURE:
-- For the repository URL, run `git remote get-url origin` to get the CURRENT repo URL — do NOT hardcode or guess
-- NEVER use `application-update` to set git config — it does NOT work. Use the EXACT tools listed below.
-- NEVER use `saveGithubProvider` — ALWAYS use `saveGitProvider`
-- NEVER use HTTPS or Let's Encrypt for the domain — use HTTP only
-- MUST create domain BEFORE deploying
-- Follow the steps EXACTLY as written — do NOT combine or skip steps
-
-### Step 1: Git — Commit and Push
+### Step 1: Git Push
 
 ```bash
-git add -A
-git commit -m "feat: 建立診所掛號系統"
-git push origin main
+git add -A && git commit -m "feat: 建立診所掛號系統" && git push origin main
 ```
 
 ### Step 2: Create Project
 
-- Use the `project-create` tool with name: `clinic-demo`
-- If it already exists (check with `project-all`), reuse it — do NOT create a duplicate
+Tool: `project-create`
+Params: `{ "name": "clinic-demo" }`
+→ Save the returned `projectId` for the next steps.
+
+If project already exists (check with `project-all` first), use the existing `projectId`.
 
 ### Step 3: Create Application
 
-- Use the `application-create` tool
-- name: `clinic-app`
-- Use the projectId from Step 2
+Tool: `application-create`
+Params: `{ "name": "clinic-app", "projectId": "{projectId}" }`
+→ Save the returned `applicationId` for the next steps.
 
 ### Step 4: Connect Git Repository
 
-- Use the `application-saveGitProvider` tool (NOT saveGithubProvider)
-- applicationId: from Step 3
-- customGitUrl: get from `git remote get-url origin` (append `.git` if not present)
-- customGitBranch: `main`
-- customGitBuildPath: `/`
+Tool: `application-saveGitProvider`
+Params:
+
+```json
+{
+  "applicationId": "{applicationId}",
+  "customGitUrl": "https://github.com/jianwei0510/test-app.git",
+  "customGitBranch": "main",
+  "customGitBuildPath": "/"
+}
+```
 
 ### Step 5: Set Build Type
 
-- Use the `application-saveBuildType` tool
-- applicationId: from Step 3
-- buildType: `nixpacks`
+Tool: `application-saveBuildType`
+Params: `{ "applicationId": "{applicationId}", "buildType": "nixpacks" }`
 
-### Step 6: Set Domain (BEFORE deploying)
+### Step 6: Create Domain
 
-- Use the `domain-create` tool
-- applicationId: from Step 3
-- host: `clinic-demo.3-137-141-132.traefik.me`
-- port: `3000`
-- https: `false`
-- certificateType: `none`
+Tool: `domain-create`
+Params:
 
-### Step 7: Deploy (AFTER domain is set)
+```json
+{
+  "applicationId": "{applicationId}",
+  "host": "clinic-demo.3-137-141-132.traefik.me",
+  "port": 3000,
+  "https": false,
+  "certificateType": "none"
+}
+```
 
-- Use the `application-deploy` tool
-- applicationId: from Step 3
+### Step 7: Deploy
 
-### Step 8: Report URL
+Tool: `application-deploy`
+Params: `{ "applicationId": "{applicationId}" }`
+
+### Step 8: Report
 
 Tell the user:
 
 > 部署完成！應用程式網址：http://clinic-demo.3-137-141-132.traefik.me
 > （部署需要約 1-2 分鐘生效）
-
-### Troubleshooting
-
-- If `application-deploy` fails, try `application-redeploy`
-- If domain already exists, skip Step 6
-- If project already exists, skip Step 2 and use the existing projectId
