@@ -2,5 +2,4 @@ node_modules/
 data/
 .env
 backup/
-.vscode/
-mcp.json
+.vscode/mcp.json
