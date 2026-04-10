@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "dokploy-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@ahdev/dokploy-mcp@latest"],
+      "env": {
+        "DOKPLOY_URL": "https://deployment-portal.wuc.edu/api",
+        "DOKPLOY_API_KEY": "oBjujEkqOQuSdShEXxTjRroLtOHmtsdLMSnnUcMTGyHGIPYpTSyjppbPdgynhfUU"
+      }
+    }
+  }
+}

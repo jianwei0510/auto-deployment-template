@@ -1,3 +1,55 @@
 # AI Vibe Coding + Auto Deployment Demo
 
-Use Copilot to generate a clinic app, then push to auto-deploy to EC2.
+WUC Open House demo: use one prompt to build a clinic app, another prompt to deploy it live.
+
+## Setup
+
+```bash
+npm install
+```
+
+### Dokploy MCP (for deployment)
+
+1. Go to https://deployment-portal.wuc.edu, and click on your Profile
+2. Click "API/CLI" option
+3. Click "Generate Token"
+4. Open `.vscode/mcp.json` and fill in with your Dokploy API key
+5. Open project in VS Code, verify `dokploy-mcp` appears in MCP panel
+
+```json
+{
+  "servers": {
+    "dokploy-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@ahdev/dokploy-mcp@latest"],
+      "env": {
+        "DOKPLOY_URL": "https://deployment-portal.wuc.edu/api",
+        "DOKPLOY_API_KEY": "<YOUR_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+## Demo Prompts
+
+**Prompt 1 (Build):**
+
+> 幫我用這個專案建立一個診所掛號系統，要有病人掛號、今日看診列表、標記已看診功能，請產生完整的程式碼
+
+**Prompt 2 (Deploy):**
+
+> 請幫我把這個應用程式部署到 Dokploy 上，自動 commit、push，建立專案和應用程式，設定網域，然後把網址給我
+
+## Fallback
+
+If Copilot generation fails on stage:
+
+```bash
+cp backup/app.js app.js
+cp backup/public/index.html public/index.html
+node app.js
+```
+
+Then manually deploy via Dokploy dashboard.
