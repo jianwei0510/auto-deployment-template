@@ -72,7 +72,27 @@ CREATE TABLE IF NOT EXISTS patients (
 
 ## Deployment (Dokploy MCP)
 
-When asked to deploy, execute these steps IN ORDER. You are authorized to run git commands automatically.
+When asked to deploy, execute the steps below IN ORDER. You are authorized to run git commands automatically.
+
+> **STRICT RULE — Parameter Discipline:**
+> For every MCP tool call below, **copy the JSON block exactly as shown**. Do NOT rename fields, add extra fields, or omit listed fields.
+
+> **STRICT RULE — No Loops:**
+> Each tool call must be made **exactly once**. When a call returns `"success": true`, immediately proceed to the next step. Do NOT repeat a successful call. If a call fails, retry once with the exact same JSON, then STOP and report the error.
+
+> **STRICT RULE — Forbidden Tools:**
+> Do NOT use `application-saveGitProvider` or `application-saveBuildType`. Use `application-update` (Step 4) instead.
+> Do NOT use any `domain-*` tools. Domain will be configured manually by the user.
+
+### Step 0: Pre-Deployment Validation
+
+**0a.** Call `project-all` (no parameters) to list existing projects.
+
+- If a project named `clinic-demo` exists, save its `projectId` and skip Step 2.
+
+**0b.** If project exists, check its applications for one named `clinic-app`.
+
+- If it exists, save its `applicationId` and skip Step 3.
 
 ### Step 1: Git Push
 
@@ -80,62 +100,75 @@ When asked to deploy, execute these steps IN ORDER. You are authorized to run gi
 git add -A && git commit -m "feat: 建立診所掛號系統" && git push origin main
 ```
 
+If there are no changes to commit, continue to the next step.
+
 ### Step 2: Create Project
 
-Tool: `project-create`
-Params: `{ "name": "clinic-demo" }`
-→ Save the returned `projectId` for the next steps.
+(Skip if project already exists from Step 0a.)
 
-If project already exists (check with `project-all` first), use the existing `projectId`.
+Tool: `project-create`
+Params — **copy exactly**:
+
+```json
+{
+  "name": "clinic-demo"
+}
+```
+
+Save the returned `projectId`.
 
 ### Step 3: Create Application
 
+(Skip if application already exists from Step 0b.)
+
 Tool: `application-create`
-Params: `{ "name": "clinic-app", "projectId": "{projectId}" }`
-→ Save the returned `applicationId` for the next steps.
+Params — **copy exactly**, only replacing `{projectId}`:
 
-### Step 4: Connect Git Repository
+```json
+{
+  "name": "clinic-app",
+  "projectId": "{projectId}"
+}
+```
 
-Tool: `application-saveGitProvider`
-Params:
+**WARNING:** The field is `name`, NOT `appName`. The field is `projectId`, NOT `environmentId`. Save the returned `applicationId`.
+
+### Step 4: Configure Git Source and Build Type
+
+Tool: `application-update`
+Params — **copy exactly**, only replacing `{applicationId}`:
 
 ```json
 {
   "applicationId": "{applicationId}",
-  "customGitUrl": "https://github.com/jianwei0510/test-app.git",
+  "sourceType": "git",
+  "customGitUrl": "https://github.com/jianwei0510/clinic-app-simple.git",
   "customGitBranch": "main",
-  "customGitBuildPath": "/"
+  "customGitBuildPath": "/",
+  "buildType": "nixpacks"
 }
 ```
 
-### Step 5: Set Build Type
-
-Tool: `application-saveBuildType`
-Params: `{ "applicationId": "{applicationId}", "buildType": "nixpacks" }`
-
-### Step 6: Create Domain
-
-Tool: `domain-create`
-Params:
-
-```json
-{
-  "applicationId": "{applicationId}",
-  "host": "clinic-demo.3-137-141-132.traefik.me",
-  "port": 3000,
-  "https": false,
-  "certificateType": "none"
-}
-```
-
-### Step 7: Deploy
+### Step 5: Deploy
 
 Tool: `application-deploy`
-Params: `{ "applicationId": "{applicationId}" }`
+Params — **copy exactly**, only replacing `{applicationId}`:
 
-### Step 8: Report
+```json
+{
+  "applicationId": "{applicationId}"
+}
+```
+
+### Step 6: Report
 
 Tell the user:
 
-> 部署完成！應用程式網址：http://clinic-demo.3-137-141-132.traefik.me
-> （部署需要約 1-2 分鐘生效）
+> ✅ 部署已觸發！Application ID: `{applicationId}`
+>
+> 請到 Dokploy 控制面板手動設定域名：
+>
+> 1. 前往 https://deployment-portal.wuc.edu
+> 2. 找到專案 clinic-demo → 應用 clinic-app
+> 3. 點選 Domains → Add Domain
+> 4. 設定 Port 為 3000，儲存後即可透過域名存取

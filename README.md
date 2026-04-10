@@ -10,11 +10,11 @@ npm install
 
 ### Dokploy MCP (for deployment)
 
-1. Go to https://deployment-portal.wuc.edu, and click on your Profile
-2. Click "API/CLI" option
-3. Click "Generate Token"
-4. Open `.vscode/mcp.json` and fill in with your Dokploy API key
-5. Open project in VS Code, verify `dokploy-mcp` appears in MCP panel
+1. Go to https://deployment-portal.wuc.edu, click on your Profile
+2. Click "API/CLI" → "Generate Token"
+3. Open `.vscode/mcp.json` and fill in your API key
+4. Open project in VS Code, verify `dokploy-mcp` appears in MCP panel
+5. In Copilot Chat, switch to **Agent Mode** and select **Auto-Approve**
 
 ```json
 {
@@ -32,15 +32,26 @@ npm install
 }
 ```
 
-## Demo Prompts
+## Demo Flow
 
-**Prompt 1 (Build):**
+**Step 1 — Build (Copilot Prompt):**
 
 > 幫我用這個專案建立一個診所掛號系統，要有病人掛號、今日看診列表、標記已看診功能，請產生完整的程式碼
 
-**Prompt 2 (Deploy):**
+**Step 2 — Deploy (Copilot Prompt):**
 
-> 請幫我把這個應用程式部署到 Dokploy 上，自動 commit、push，建立專案和應用程式，設定網域，然後把網址給我
+> 請幫我把這個應用程式部署到 Dokploy 上，自動 commit、push，建立專案和應用程式，然後告訴我結果
+
+Copilot will auto commit, push, create project/app in Dokploy, and trigger deployment.
+
+**Step 3 — Domain (Manual):**
+
+After Copilot finishes, go to Dokploy dashboard to add domain:
+
+1. Open https://deployment-portal.wuc.edu
+2. Find project `clinic-demo` → app `clinic-app`
+3. Click **Domains** → **Add Domain**
+4. Set Port to `3000`, save
 
 ## Fallback
 
@@ -52,4 +63,4 @@ cp backup/public/index.html public/index.html
 node app.js
 ```
 
-Then manually deploy via Dokploy dashboard.
+Then deploy manually via Dokploy dashboard.
