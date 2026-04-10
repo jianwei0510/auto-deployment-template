@@ -75,11 +75,13 @@ CREATE TABLE IF NOT EXISTS patients (
 When asked to deploy this application, follow these steps IN THIS EXACT ORDER.
 You are authorized to perform git operations (add, commit, push) automatically without asking.
 
-⚠️ CRITICAL RULES:
+⚠️ CRITICAL RULES — VIOLATING THESE WILL CAUSE DEPLOYMENT FAILURE:
 - For the repository URL, run `git remote get-url origin` to get the CURRENT repo URL — do NOT hardcode or guess
-- NEVER use saveGithubProvider — ALWAYS use saveGitProvider
+- NEVER use `application-update` to set git config — it does NOT work. Use the EXACT tools listed below.
+- NEVER use `saveGithubProvider` — ALWAYS use `saveGitProvider`
 - NEVER use HTTPS or Let's Encrypt for the domain — use HTTP only
 - MUST create domain BEFORE deploying
+- Follow the steps EXACTLY as written — do NOT combine or skip steps
 
 ### Step 1: Git — Commit and Push
 
